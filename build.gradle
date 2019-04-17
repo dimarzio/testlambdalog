@@ -1,6 +1,5 @@
 plugins {
     id 'java-library'
-    id "com.github.johnrengelman.shadow" version "5.0.0"
 }
 
 group = 'testlambda'
@@ -15,6 +14,14 @@ dependencies {
 
     compile 'org.apache.logging.log4j:log4j-core:2.8.2'
     compile 'org.apache.logging.log4j:log4j-api:2.8.2'
-
-    testImplementation 'junit:junit:4.12'
 }
+
+task buildZip(type: Zip) {
+    from compileJava
+    from processResources
+    into('lib') {
+        from configurations.compileClasspath
+    }
+}
+
+build.dependsOn buildZip
